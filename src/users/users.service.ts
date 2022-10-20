@@ -9,11 +9,13 @@ export class UsersService {
 
   create(email: string, password: string) {
     const user = this.repo.create({ email, password });
-
     return this.repo.save(user);
   }
 
   async findOne(id: number) {
+    if (!id) {
+      throw new NotFoundException(`user not found`);
+    }
     const user = await this.repo.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`user not found`);
